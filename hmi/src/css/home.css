@@ -1,0 +1,53 @@
+.home-tabs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    /* background-color: #2b0505; */
+}
+
+.home-tabs > * {
+    margin: 0.5vh;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: sans-serif;
+    border: 1px solid rgb(255, 255, 255);
+    padding: 0.75vh;
+}
+
+.home-side-menu {
+    flex: 1;
+}
+
+.home-content {
+    flex: 10;
+    flex-direction: row;
+    overflow: auto;
+    border-left: 0.5vh solid #2b0505;
+}
+
+.home {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.home-vertical-bar {
+    width: 0.5vh;
+    height: 100%;
+    background-color: #2b0505;
+}
+
+.display-inline {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5vh;
+}
+
+.display-inline > div {
+    width: 15vh;
+    text-align: right;
+}

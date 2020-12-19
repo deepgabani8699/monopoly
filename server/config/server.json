@@ -1,0 +1,6 @@
+{
+    "configDBAddress": "localhost",
+    "configDBPort": 27017,
+    
+    "socketioPort": 3002
+}
