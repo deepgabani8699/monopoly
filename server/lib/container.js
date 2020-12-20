@@ -39,8 +39,16 @@ function dispatchSideEffects(action) {
                 });
                 return;
             }
+        case 'deleteDesignFromAdmin':
+        case 'signUpFromAdmin':
+        case 'editDesignFromAdmin':
+        case 'addNewDesignFromAdmin':
+            {
+                _hmis2.default.to().emit('setState', (0, _store.getState)());
+                return;
+            }
         default:
-            console.log('No side effect for ' + action.type);
+        // console.log(`No side effect for ${action.type}`);
     }
 }
 

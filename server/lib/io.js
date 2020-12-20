@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _socket = require('socket.io');
@@ -14,32 +14,32 @@ var server = require('../config/server');
 var io = void 0;
 
 var startedResolver = {
-    resolve: null,
-    reject: null
+  resolve: null,
+  reject: null
 };
 
 var started = new Promise(function (resolve, reject) {
-    Object.assign(startedResolver, { resolve: resolve, reject: reject });
+  Object.assign(startedResolver, { resolve: resolve, reject: reject });
 });
 
 function start() {
-    if (io != null) {
-        return;
-    }
+  if (io != null) {
+    return;
+  }
 
-    console.log('Binding socket.io to port ' + server.socketioPort);
+  console.log('Binding socket.io to port ' + server.socketioPort);
 
-    io = (0, _socket2.default)(server.socketioPort);
-    var resolve = startedResolver.resolve;
-    if (resolve == null) {
-        throw new Error('Unable to start IO!');
-    }
-    resolve(io);
+  io = (0, _socket2.default)(server.socketioPort);
+  var resolve = startedResolver.resolve;
+  if (resolve == null) {
+    throw new Error('Unable to start IO!');
+  }
+  resolve(io);
 }
 
 var api = {
-    start: start,
-    started: started
+  start: start,
+  started: started
 };
 
 exports.default = api;

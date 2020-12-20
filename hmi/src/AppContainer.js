@@ -1,13 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import io from './library/io';
-import './css/AppContainer.css';
-import { getState, reduce } from './store';
+import { getState, reduce, getsLoginDataValidFlag } from './store';
 import Home from './Home';
-import Analysis from './Analysis';
-import Alerts from './Alerts';
-import Header from './Header';
-import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
-import logo from './assets/logo.svg';
+import logo from './assets/inventory.gif';
+import { Button, Nav, NavLink, Tab, Tabs, Modal, Form, Col, Container, Alert } from 'react-bootstrap';
 
 export function dispatch(action: Action) {
   reduce(action);
@@ -18,15 +14,35 @@ function dispatchSideEffects(action: Action) {
   AppContainer.singleton.setState(getState());
 
   switch (action.type) {
+    case 'addNewDesignFromForm': {
+      const { design_no, design_name, colors, design_images } = action;
+      io.emit('addNewDesign', { design_no, design_name, colors, design_images });
+      return;
+    }
+    case 'deleteDesignFromForm': {
+      const { design_no } = action;
+      io.emit('deleteDesign', { design_no });
+      return;
+    }
+    case 'signUpFromForm': {
+      const { email_id, password } = action;
+      io.emit('signUp', { email_id, password });
+      return;
+    }
+    case 'editDesignFromForm': {
+      const { design_no, design_name, colors } = action;
+      io.emit('editDesign', { design_no, design_name, colors });
+      return;
+    }
     default:
       console.log(`Nothing to dispatch from app-container.`);
   }
 }
 
 io.on('setState', (state) => {
-  const { designs } = state;
+  const { designs, users } = state;
   dispatch({
-      type: 'setStateFromServer', designs
+    type: 'setStateFromServer', designs, users
   });
 });
 
@@ -35,37 +51,20 @@ export default class AppContainer extends Component {
   static singleton: AppContainer;
 
   constructor() {
-      super();
-      AppContainer.singleton = this;
-      this.state = {
-      };
-      this.shared_data = getState();
+    super();
+    AppContainer.singleton = this;
+    this.state = {
+    };
+    this.shared_data = getState();
+  }
+
+  logout = () => {
+    dispatch({ type: 'logoutFromForm' });
   }
 
   render() {
-    
-    if (this.shared_data.serverConnection == 'offline') {
-        return (
-          <div className="primary-header header-tabs">
-            <img src={logo} className="App-logo" alt="logo" />    {/* Replace logo here */}
-            <div className="waiting-for-server"> Waiting for server connection... </div>
-          </div>
-        );
-    }
-
-    var redirect = "home";
     return (
-      <Router>
-          <div>
-            <Header/>
-            <Switch>
-                <Route path="/home" render={(routerProps) => <Home {...routerProps}{...this.shared_data}/>}/>
-                <Route path="/analysis" render={(routerProps) => <Analysis {...routerProps}{...this.shared_data}/>}/>
-                <Route path="/alerts" render={(routerProps) => <Alerts {...routerProps}{...this.shared_data}/>}/>
-                <Redirect from="/" to={redirect}/>
-            </Switch>
-          </div>
-      </Router>
+        <Home/>
     );
   }
 }
